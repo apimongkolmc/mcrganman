@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal Access & Registration — MCrganMan</title>
+    <meta name="description" content="Secure portal sign in and account registration for MCrganMan platform." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      html[lang="th"], html[lang="th"] body {
+        font-family: 'Prompt', 'Plus Jakarta Sans', system-ui, sans-serif;
+      }
+      :root {
+        --bg-base: #fafafa;
+        --text-base: #09090b;
+        --card-bg: #ffffff;
+        --input-bg: #f4f4f5;
+        --border-color: #e4e4e7;
+        --accent: #0284c7;
+        --accent-hover: #0369a1;
+        --card-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+      }
+
+      html.dark {
+        --bg-base: #09090b;
+        --text-base: #fafafa;
+        --card-bg: #121215;
+        --input-bg: #18181b;
+        --border-color: #27272a;
+        --accent: #38bdf8;
+        --accent-hover: #7dd3fc;
+        --card-shadow: 0 12px 35px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-base);
+        color: var(--text-base);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 24px 16px;
+        position: relative;
+        transition: background-color 0.25s ease, color 0.25s ease;
+      }
+
+      .card-container {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 440px;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 32px 28px;
+        box-shadow: var(--card-shadow);
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      .back-link {
+        color: var(--accent);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: opacity 0.2s;
+      }
+
+      .back-link:hover {
+        opacity: 0.8;
+        text-decoration: underline;
+      }
+
+      .theme-btn {
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 6px 10px;
+        cursor: pointer;
+        color: var(--text-base);
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* Tabs toggle between Sign In and Register */
+      .auth-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 3px;
+        margin-bottom: 22px;
+      }
+
+      .tab-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+        background: transparent;
+        color: #71717a;
+        border-radius: 9px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+      }
+
+      .tab-btn.active {
+        background: var(--card-bg);
+        color: var(--text-base);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      }
+
+      .header-title {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+      }
+
+      .header-desc {
+        font-size: 13px;
+        color: #71717a;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 11px;
+        font-family: 'JetBrains Mono', monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #71717a;
+        margin-bottom: 6px;
+      }
+
+      .minimal-input {
+        width: 100%;
+        background: var(--input-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14px;
+        color: var(--text-base);
+        outline: none;
+        transition: border 0.2s, box-shadow 0.2s;
+        font-family: inherit;
+      }
+
+      .minimal-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+      }
+
+      .submit-btn {
+        width: 100%;
+        background: #09090b;
+        color: #ffffff;
+        border: 1px solid #09090b;
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        margin-top: 6px;
+      }
+
+      html.dark .submit-btn {
+        background: #fafafa;
+        color: #09090b;
+        border-color: #fafafa;
+      }
+
+      .submit-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .status-alert {
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 12px;
+        margin-bottom: 16px;
+        display: none;
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      .status-error {
+        background: rgba(244, 63, 94, 0.1);
+        border: 1px solid rgba(244, 63, 94, 0.25);
+        color: #f43f5e;
+      }
+
+      .status-success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        color: #10b981;
+      }
+
+      .footer-note {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 11px;
+        font-family: 'JetBrains Mono', monospace;
+        color: #71717a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-container">
+      <div class="top-nav">
+        <a href="/" class="back-link">← Return to Homepage</a>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <a href="/settings.html" class="theme-btn" title="Display &amp; Animation Settings" style="text-decoration: none;">
+            ⚙️ Settings
+          </a>
+          <button id="themeToggle" class="theme-btn" title="Toggle theme">
+            <span id="themeIcon">☀️</span> Light/Dark
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
+        <div style="width: 44px; height: 44px; border-radius: 14px; overflow: hidden; border: 2px solid var(--border-color); flex-shrink: 0; background: #27272a;">
+          <img src="https://mcrganman.page.gd/profile/mcrganman.jpg" alt="MCrganMan" referrerpolicy="no-referrer" style="width: 100%; height: 100%; object-fit: cover;" />
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 15px; letter-spacing: -0.01em;">MCrganMan</div>
+          <div style="font-size: 11px; color: #71717a; font-family: 'JetBrains Mono', monospace;">Unified Access Portal</div>
+        </div>
+      </div>
+
+      <!-- Auth Tabs: Sign In vs Register -->
+      <div class="auth-tabs" id="tabContainer">
+        <button type="button" class="tab-btn active" id="tabSignIn">Sign In</button>
+        <button type="button" class="tab-btn" id="tabRegister">Register</button>
+      </div>
+
+      <div id="alertBox" class="status-alert"></div>
+
+      <!-- Sign In Form -->
+      <div id="signInSection">
+        <h1 class="header-title">Portal Sign In</h1>
+        <p class="header-desc">Enter your account credentials to access your session.</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="loginUsername">Username or Email</label>
+            <input type="text" id="loginUsername" class="minimal-input" required placeholder="Enter username or email" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" class="minimal-input" required placeholder="Enter password" />
+          </div>
+
+          <button type="submit" id="loginSubmitBtn" class="submit-btn">
+            Sign In
+          </button>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerSection" style="display: none;">
+        <h1 class="header-title">Create Account</h1>
+        <p class="header-desc">Register a new profile to access tools and save your preferences.</p>
+
+        <form id="registerForm">
+          <div class="form-group">
+            <label class="form-label" for="regUsername">Choose Username</label>
+            <input type="text" id="regUsername" class="minimal-input" required minlength="3" placeholder="e.g. miner_alex" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Email Address (Optional)</label>
+            <input type="email" id="regEmail" class="minimal-input" placeholder="you@domain.com" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Password</label>
+            <input type="password" id="regPassword" class="minimal-input" required minlength="4" placeholder="Min. 4 characters" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regPasswordConfirm">Confirm Password</label>
+            <input type="password" id="regPasswordConfirm" class="minimal-input" required minlength="4" placeholder="Re-enter password" />
+          </div>
+
+          <button type="submit" id="regSubmitBtn" class="submit-btn">
+            Create Account
+          </button>
+        </form>
+      </div>
+
+      <!-- Authenticated Dashboard View -->
+      <div id="dashboardSection" style="display: none;">
+        <h1 class="header-title">Command Center</h1>
+        <p class="header-desc">Authenticated Session Active.</p>
+
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color);">
+            <span style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: #71717a;">ACTIVE USER</span>
+            <span style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: #10b981;">● Online</span>
+          </div>
+
+          <div style="font-size: 16px; font-weight: 700; margin-bottom: 4px;" id="userHandle">User</div>
+          <div style="font-size: 12px; color: #71717a; font-family: 'JetBrains Mono', monospace; margin-bottom: 10px;" id="userRole">Role: Member</div>
+          <div style="font-size: 11px; color: #71717a; font-family: 'JetBrains Mono', monospace;" id="tokenDisplay">Token: Active</div>
+        </div>
+
+        <button type="button" id="logoutBtn" class="submit-btn" style="background: #f43f5e; color: #ffffff; border-color: #f43f5e;">
+          Log Out
+        </button>
+      </div>
+
+      <div class="footer-note">
+        Unified Auth Portal · MCrganMan Platform
+      </div>
+    </div>
+
+    <script>
+      // Theme handling
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      
+      const savedTheme = localStorage.getItem('mcrganman_theme') || 'dark';
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        themeIcon.textContent = '🌙';
+      } else {
+        document.documentElement.classList.add('dark');
+        themeIcon.textContent = '☀️';
+      }
+
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        themeIcon.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('mcrganman_theme', isDark ? 'dark' : 'light');
+      });
+
+      // Tabs switching
+      const tabSignIn = document.getElementById('tabSignIn');
+      const tabRegister = document.getElementById('tabRegister');
+      const tabContainer = document.getElementById('tabContainer');
+      const signInSection = document.getElementById('signInSection');
+      const registerSection = document.getElementById('registerSection');
+      const dashboardSection = document.getElementById('dashboardSection');
+      const alertBox = document.getElementById('alertBox');
+
+      function showAlert(msg, isSuccess = false) {
+        alertBox.textContent = msg;
+        alertBox.className = 'status-alert ' + (isSuccess ? 'status-success' : 'status-error');
+        alertBox.style.display = 'block';
+      }
+
+      function clearAlert() {
+        alertBox.style.display = 'none';
+        alertBox.className = 'status-alert';
+      }
+
+      tabSignIn.addEventListener('click', () => {
+        clearAlert();
+        tabSignIn.classList.add('active');
+        tabRegister.classList.remove('active');
+        signInSection.style.display = 'block';
+        registerSection.style.display = 'none';
+      });
+
+      tabRegister.addEventListener('click', () => {
+        clearAlert();
+        tabRegister.classList.add('active');
+        tabSignIn.classList.remove('active');
+        registerSection.style.display = 'block';
+        signInSection.style.display = 'none';
+      });
+
+      // Local storage fallback users
+      function getLocalUsers() {
+        try {
+          return JSON.parse(localStorage.getItem('mcrganman_registered_users') || '[]');
+        } catch {
+          return [];
+        }
+      }
+
+      function saveLocalUser(user) {
+        const users = getLocalUsers();
+        users.push(user);
+        localStorage.setItem('mcrganman_registered_users', JSON.stringify(users));
+      }
+
+      // Login handler
+      const loginForm = document.getElementById('loginForm');
+      const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+      const userHandle = document.getElementById('userHandle');
+      const userRole = document.getElementById('userRole');
+      const tokenDisplay = document.getElementById('tokenDisplay');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAlert();
+
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+
+        loginSubmitBtn.disabled = true;
+        loginSubmitBtn.textContent = 'Verifying...';
+
+        try {
+          const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+
+          const data = await res.json().catch(() => ({}));
+
+          if (res.ok && data.status === 'success') {
+            tabContainer.style.display = 'none';
+            signInSection.style.display = 'none';
+            registerSection.style.display = 'none';
+            dashboardSection.style.display = 'block';
+            userHandle.textContent = data.data.username || username;
+            userRole.textContent = 'Role: ' + (data.data.role === 'creator' ? 'Creator (MCrganMan)' : 'Registered Member');
+            tokenDisplay.textContent = 'Session: ' + (data.data.token || 'tok_valid').substring(0, 18) + '...';
+            localStorage.setItem('mcrganman_auth_session', JSON.stringify(data.data));
+            return;
+          }
+        } catch (err) {}
+
+        // Check local storage accounts fallback
+        const localUsers = getLocalUsers();
+        const localMatch = localUsers.find(
+          u => (u.username.toLowerCase() === username.toLowerCase() || (u.email && u.email.toLowerCase() === username.toLowerCase())) &&
+               u.password === password
+        );
+
+        if (localMatch) {
+          tabContainer.style.display = 'none';
+          signInSection.style.display = 'none';
+          registerSection.style.display = 'none';
+          dashboardSection.style.display = 'block';
+          userHandle.textContent = localMatch.username;
+          userRole.textContent = 'Role: Registered Member';
+          tokenDisplay.textContent = 'Session: ' + localMatch.token.substring(0, 18) + '...';
+          localStorage.setItem('mcrganman_auth_session', JSON.stringify(localMatch));
+        } else if (username === 'MCrganMan' && password === 'MCrganMan') {
+          tabContainer.style.display = 'none';
+          signInSection.style.display = 'none';
+          registerSection.style.display = 'none';
+          dashboardSection.style.display = 'block';
+          userHandle.textContent = 'MCrganMan';
+          userRole.textContent = 'Role: Creator (MCrganMan)';
+          tokenDisplay.textContent = 'Session: creator_active';
+        } else {
+          showAlert('Invalid credentials. Please verify your username and password, or click Register.');
+        }
+
+        loginSubmitBtn.disabled = false;
+        loginSubmitBtn.textContent = 'Sign In';
+      });
+
+      // Register handler
+      const registerForm = document.getElementById('registerForm');
+      const regSubmitBtn = document.getElementById('regSubmitBtn');
+
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAlert();
+
+        const username = document.getElementById('regUsername').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value.trim();
+
+        if (password !== passwordConfirm) {
+          showAlert('Passwords do not match. Please re-enter.');
+          return;
+        }
+
+        regSubmitBtn.disabled = true;
+        regSubmitBtn.textContent = 'Creating account...';
+
+        let registered = false;
+
+        try {
+          const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+          });
+
+          const data = await res.json().catch(() => ({}));
+
+          if (res.ok && data.status === 'success') {
+            registered = true;
+            saveLocalUser({
+              username: data.data.username,
+              email: data.data.email,
+              password,
+              token: data.data.token,
+              role: 'member'
+            });
+
+            tabContainer.style.display = 'none';
+            signInSection.style.display = 'none';
+            registerSection.style.display = 'none';
+            dashboardSection.style.display = 'block';
+            userHandle.textContent = data.data.username;
+            userRole.textContent = 'Role: Registered Member';
+            tokenDisplay.textContent = 'Session: ' + data.data.token.substring(0, 18) + '...';
+            localStorage.setItem('mcrganman_auth_session', JSON.stringify(data.data));
+            return;
+          } else {
+            showAlert(data.message || 'Registration failed. Try a different username.');
+          }
+        } catch (err) {}
+
+        if (!registered) {
+          // Fallback to local storage registration
+          const localUsers = getLocalUsers();
+          const exists = localUsers.some(u => u.username.toLowerCase() === username.toLowerCase());
+
+          if (exists) {
+            showAlert('That username is already taken. Please choose another.');
+          } else {
+            const token = 'tok_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            const userObj = { username, email, password, token, role: 'member' };
+            saveLocalUser(userObj);
+
+            tabContainer.style.display = 'none';
+            signInSection.style.display = 'none';
+            registerSection.style.display = 'none';
+            dashboardSection.style.display = 'block';
+            userHandle.textContent = username;
+            userRole.textContent = 'Role: Registered Member';
+            tokenDisplay.textContent = 'Session: ' + token.substring(0, 18) + '...';
+            localStorage.setItem('mcrganman_auth_session', JSON.stringify(userObj));
+          }
+        }
+
+        regSubmitBtn.disabled = false;
+        regSubmitBtn.textContent = 'Create Account';
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        dashboardSection.style.display = 'none';
+        tabContainer.style.display = 'grid';
+        signInSection.style.display = 'block';
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('regPassword').value = '';
+        document.getElementById('regPasswordConfirm').value = '';
+        localStorage.removeItem('mcrganman_auth_session');
+        clearAlert();
+      });
+
+      // Auto-restore active session if present
+      try {
+        const savedSession = JSON.parse(localStorage.getItem('mcrganman_auth_session') || 'null');
+        if (savedSession && savedSession.username) {
+          tabContainer.style.display = 'none';
+          signInSection.style.display = 'none';
+          registerSection.style.display = 'none';
+          dashboardSection.style.display = 'block';
+          userHandle.textContent = savedSession.username;
+          userRole.textContent = 'Role: ' + (savedSession.role === 'creator' ? 'Creator (MCrganMan)' : 'Registered Member');
+          tokenDisplay.textContent = 'Session: ' + (savedSession.token || 'tok_valid').substring(0, 18) + '...';
+        }
+      } catch {}
+    </script>
+  </body>
+</html>

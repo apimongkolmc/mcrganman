@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" class="dark liquid-glass-active">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCrganMan — Preferences &amp; Display Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Silkscreen&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-color: #fafafa;
+        --card-bg: #ffffff;
+        --text-color: #09090b;
+        --border-color: #e4e4e7;
+        --accent-cyan: #0284c7;
+      }
+
+      html.dark {
+        --bg-color: #09090b;
+        --card-bg: #121215;
+        --text-color: #fafafa;
+        --border-color: #27272a;
+        --accent-cyan: #38bdf8;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        transition: background-color 0.25s ease, color 0.25s ease;
+      }
+
+      html[lang="th"], html[lang="th"] body {
+        font-family: 'Prompt', 'Plus Jakarta Sans', system-ui, sans-serif;
+      }
+
+      .card-container {
+        width: 100%;
+        max-width: 520px;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 28px;
+        padding: 36px 32px;
+        box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.25);
+      }
+
+      html.liquid-glass-active .card-container {
+        background: rgba(18, 18, 22, 0.65);
+        -webkit-backdrop-filter: blur(28px);
+        backdrop-filter: blur(28px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .back-link {
+        font-size: 13px;
+        color: #71717a;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      .back-link:hover {
+        color: var(--accent-cyan);
+      }
+
+      h1 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      html[lang="th"] h1 {
+        font-family: 'Prompt', sans-serif;
+      }
+
+      .subhead {
+        font-size: 13px;
+        color: #71717a;
+        margin-bottom: 24px;
+        line-height: 1.5;
+      }
+
+      .setting-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 18px;
+        background-color: rgba(120, 120, 128, 0.06);
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        margin-bottom: 14px;
+      }
+
+      .setting-info {
+        flex: 1;
+      }
+
+      .setting-title {
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+
+      .setting-desc {
+        font-size: 12px;
+        color: #71717a;
+        line-height: 1.4;
+      }
+
+      /* Toggle switch */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 26px;
+        flex-shrink: 0;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #52525b;
+        transition: .3s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .3s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #06b6d4;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+
+      .preview-box {
+        margin-top: 20px;
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px dashed var(--border-color);
+        text-align: center;
+        font-size: 12px;
+        font-family: 'JetBrains Mono', monospace;
+        color: #71717a;
+      }
+
+      .lang-btn {
+        padding: 6px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .lang-btn.active {
+        background: #0284c7;
+        color: #ffffff;
+        border-color: #0284c7;
+      }
+
+      .save-btn {
+        width: 100%;
+        margin-top: 24px;
+        padding: 12px 18px;
+        background: #09090b;
+        color: #ffffff;
+        border: 1px solid #09090b;
+        border-radius: 14px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      html.dark .save-btn {
+        background: #fafafa;
+        color: #09090b;
+        border-color: #fafafa;
+      }
+
+      .save-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-container">
+      <div class="top-nav">
+        <a href="/" class="back-link" id="backLink">← Return to Homepage</a>
+        <div style="display: flex; gap: 8px;">
+          <button id="themeToggle" style="background: none; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 10px; color: inherit; cursor: pointer; font-size: 12px;">
+            🌓 Theme
+          </button>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <div style="width: 44px; height: 44px; border-radius: 14px; overflow: hidden; border: 2px solid var(--border-color); flex-shrink: 0; background: #27272a;">
+          <img src="https://mcrganman.page.gd/profile/mcrganman.jpg" alt="MCrganMan" referrerpolicy="no-referrer" style="width: 100%; height: 100%; object-fit: cover;" />
+        </div>
+        <div>
+          <h1 id="pageTitle">Display &amp; Experience</h1>
+          <div style="font-size: 11px; color: #71717a; font-family: 'JetBrains Mono', monospace;" id="pageSubtitle">Separated Preferences File</div>
+        </div>
+      </div>
+
+      <div class="subhead" id="subheadDesc">
+        Customize liquid glass refraction, micro-interaction physics, and overall visual fidelity.
+      </div>
+
+      <!-- Setting 0: Language (ภาษา) -->
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-title" id="langTitle">
+            <span>🌐 Language (ภาษา)</span>
+          </div>
+          <div class="setting-desc" id="langDesc">
+            Supported languages: English &amp; ภาษาไทย (Prompt Font)
+          </div>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button type="button" class="lang-btn" id="langEnBtn">EN</button>
+          <button type="button" class="lang-btn" id="langThBtn">TH</button>
+        </div>
+      </div>
+
+      <!-- Setting 1: Liquid Glass -->
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-title" id="glassTitle">
+            <span>🔮 Liquid Glass Mode</span>
+          </div>
+          <div class="setting-desc" id="glassDesc">
+            Enables frosted glassmorphism, refractive specular edges, and translucent layering across cards and navigation.
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="liquidGlassToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Setting 2: UI Animations -->
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-title" id="animTitle">
+            <span>⚡ UI Animations &amp; Motion</span>
+          </div>
+          <div class="setting-desc" id="animDesc">
+            Enables smooth 60FPS micro-interactions, float states, and glowing pulses. Disable for instant static responses.
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="animationToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="preview-box" id="previewStatus">
+        Liquid Glass: ACTIVE | Animations: ENABLED
+      </div>
+
+      <button type="button" class="save-btn" id="saveBtn" onclick="window.location.href='/'">
+        Apply &amp; Return to Home
+      </button>
+    </div>
+
+    <script>
+      const glassToggle = document.getElementById('liquidGlassToggle');
+      const animToggle = document.getElementById('animationToggle');
+      const themeBtn = document.getElementById('themeToggle');
+      const langEnBtn = document.getElementById('langEnBtn');
+      const langThBtn = document.getElementById('langThBtn');
+      const previewStatus = document.getElementById('previewStatus');
+
+      // Load preferences
+      const savedGlass = localStorage.getItem('mcrganman_liquid_glass');
+      const savedAnim = localStorage.getItem('mcrganman_animations');
+      const savedTheme = localStorage.getItem('theme');
+      let currentLang = localStorage.getItem('mcrganman_lang') || 'en';
+
+      if (savedGlass !== null) glassToggle.checked = savedGlass === 'true';
+      if (savedAnim !== null) animToggle.checked = savedAnim === 'true';
+
+      function applyTranslations() {
+        document.documentElement.setAttribute('lang', currentLang);
+        if (currentLang === 'th') {
+          langThBtn.classList.add('active');
+          langEnBtn.classList.remove('active');
+          document.getElementById('backLink').textContent = '← กลับสู่หน้าหลัก';
+          document.getElementById('pageTitle').textContent = 'การตั้งค่าประสบการณ์';
+          document.getElementById('pageSubtitle').textContent = 'ไฟล์การตั้งค่าเฉพาะ';
+          document.getElementById('subheadDesc').textContent = 'กำหนดการหักเหแสงแบบ Liquid Glass, ระบบการเคลื่อนไหว และความคมชัดของภาพ';
+          document.getElementById('langTitle').innerHTML = '<span>🌐 ภาษา (Language)</span>';
+          document.getElementById('langDesc').textContent = 'ภาษาที่รองรับ: English และ ภาษาไทย (แบบอักษร Prompt)';
+          document.getElementById('glassTitle').innerHTML = '<span>🔮 โหมด Liquid Glass</span>';
+          document.getElementById('glassDesc').textContent = 'เปิดใช้งานการหักเหแสงแบบของเหลว ความเบลอของฉากหลัง แสงสะท้อนขอบ และการซ้อนทับแบบโปร่งแสง';
+          document.getElementById('animTitle').innerHTML = '<span>⚡ แอนิเมชัน &amp; การเคลื่อนไหว</span>';
+          document.getElementById('animDesc').textContent = 'เปิดใช้งานการเคลื่อนไหวที่นุ่มนวล 60FPS การลอยตัว และแสงเรืองรอง ปิดเพื่อประสิทธิภาพที่ฉับไว';
+          document.getElementById('saveBtn').textContent = 'บันทึก & กลับสู่หน้าหลัก';
+          previewStatus.textContent = `Liquid Glass: ${glassToggle.checked ? 'เปิดใช้งาน' : 'ปิด'} | แอนิเมชัน: ${animToggle.checked ? 'เปิด' : 'ปิด'}`;
+        } else {
+          langEnBtn.classList.add('active');
+          langThBtn.classList.remove('active');
+          document.getElementById('backLink').textContent = '← Return to Homepage';
+          document.getElementById('pageTitle').textContent = 'Display & Experience';
+          document.getElementById('pageSubtitle').textContent = 'Separated Preferences File';
+          document.getElementById('subheadDesc').textContent = 'Customize liquid glass refraction, micro-interaction physics, and overall visual fidelity.';
+          document.getElementById('langTitle').innerHTML = '<span>🌐 Language (ภาษา)</span>';
+          document.getElementById('langDesc').textContent = 'Supported languages: English & ภาษาไทย (Prompt Font)';
+          document.getElementById('glassTitle').innerHTML = '<span>🔮 Liquid Glass Mode</span>';
+          document.getElementById('glassDesc').textContent = 'Enables frosted glassmorphism, refractive specular edges, and translucent layering across cards and navigation.';
+          document.getElementById('animTitle').innerHTML = '<span>⚡ UI Animations & Motion</span>';
+          document.getElementById('animDesc').textContent = 'Enables smooth 60FPS micro-interactions, float states, and glowing pulses. Disable for instant static responses.';
+          document.getElementById('saveBtn').textContent = 'Apply & Return to Home';
+          previewStatus.textContent = `Liquid Glass: ${glassToggle.checked ? 'ACTIVE' : 'OFF'} | Animations: ${animToggle.checked ? 'ENABLED' : 'DISABLED'}`;
+        }
+      }
+
+      function updateState() {
+        localStorage.setItem('mcrganman_liquid_glass', String(glassToggle.checked));
+        localStorage.setItem('mcrganman_animations', String(animToggle.checked));
+        localStorage.setItem('mcrganman_lang', currentLang);
+
+        if (glassToggle.checked) {
+          document.documentElement.classList.add('liquid-glass-active');
+        } else {
+          document.documentElement.classList.remove('liquid-glass-active');
+        }
+
+        applyTranslations();
+      }
+
+      langEnBtn.addEventListener('click', () => {
+        currentLang = 'en';
+        updateState();
+      });
+
+      langThBtn.addEventListener('click', () => {
+        currentLang = 'th';
+        updateState();
+      });
+
+      glassToggle.addEventListener('change', updateState);
+      animToggle.addEventListener('change', updateState);
+
+      themeBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      // Initialize
+      updateState();
+    </script>
+  </body>
+</html>

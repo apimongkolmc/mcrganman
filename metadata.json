@@ -1,0 +1,6 @@
+{
+  "name": "MCrganMan — Minimalist AI Coder",
+  "description": "Personal portfolio, minimalist tools, livestreams, and projects by MCrganMan, minimalist AI coder.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

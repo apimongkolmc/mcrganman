@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" class="dark liquid-glass-active scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCrganMan — Minimalist AI Coder</title>
+    <meta name="description" content="Personal portfolio, minimalist tools, and Minecraft Bedrock ServerTools by MCrganMan, minimalist AI coder." />
+    <meta property="og:title" content="MCrganMan — Minimalist AI Coder" />
+    <meta property="og:description" content="Personal portfolio, minimalist tools, and Minecraft Bedrock ServerTools by MCrganMan, minimalist AI coder." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- English fonts: Space Grotesk & Plus Jakarta Sans | Thai font: Prompt & Noto Sans Thai -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Synchronous script to prevent flash and ensure Liquid Glass & Dark Mode work on static compiled builds immediately -->
+    <script>
+      (function() {
+        try {
+          var glass = localStorage.getItem('mcrganman_liquid_glass');
+          if (glass === 'false') {
+            document.documentElement.classList.remove('liquid-glass-active');
+          } else {
+            document.documentElement.classList.add('liquid-glass-active');
+          }
+
+          var anim = localStorage.getItem('mcrganman_animations');
+          if (anim === 'false') {
+            document.documentElement.classList.add('no-animations');
+          } else {
+            document.documentElement.classList.remove('no-animations');
+          }
+
+          var theme = localStorage.getItem('theme') || localStorage.getItem('mcrganman_theme');
+          if (theme === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else {
+            document.documentElement.classList.add('dark');
+          }
+
+          var lang = localStorage.getItem('mcrganman_lang');
+          if (lang === 'th') {
+            document.documentElement.setAttribute('lang', 'th');
+            document.documentElement.classList.add('lang-th');
+          } else if (lang === 'en') {
+            document.documentElement.setAttribute('lang', 'en');
+            document.documentElement.classList.remove('lang-th');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 antialiased selection:bg-cyan-500/20 selection:text-cyan-400 transition-colors duration-250">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
